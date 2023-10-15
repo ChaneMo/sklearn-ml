@@ -14,7 +14,6 @@ from sklearn.metrics import (precision_score, recall_score, f1_score, r2_score, 
 
 
 __all__ = ['model_function']
-
 # define class
 class model_comparison():
     def __init__(self):
