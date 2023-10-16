@@ -13,8 +13,7 @@ from sklearn.metrics import (precision_score, recall_score, f1_score, r2_score, 
                              mean_absolute_percentage_error, silhouette_score, calinski_harabasz_score, davies_bouldin_score)
 
 
-
-__all__ = ['model_function']
+__all__ = ['model_comparison']
 # define class
 class model_comparison():
     def __init__(self):
@@ -23,17 +22,21 @@ class model_comparison():
         self.multiclass_classification_models = ['knn_c', 'dt_c', 'gbdt_c', 'adaboost_c', 'rf_c', 'mlp_c']
         self.regression_models = ['svr', 'knn_r', 'dt_r', 'gbdt_r', 'adaboost_r', 'rf_r', 'mlp_r']
         self.cluster_models = ['kmeans', 'dbscan']
-        print('-'*80)
+        print('-'*130)
         print('Missions for choose:')
-        print(['binary_classification', 'multiclassification', 'regression', 'clustering'], sep='')
+        print(['binary_classification', 'multiclass_classification', 'regression', 'clustering'], sep='')
         print('default=multiclass_classification')
-        print('-' * 100)
+        print('-' * 130)
         print('Model for Missions:')
         print('Binary classification models:', self.binary_classification_models)
         print('Multiclass classification models:', self.multiclass_classification_models)
         print('Regression models:', self.regression_models)
         print('Clustering models:', self.cluster_models)
-        print('-' * 100)
+        print('-' * 130)
+        print('functions:')
+        print('initialize_models(self, model_names=None, mission=None, seed=None, param=None)')
+        print("fit_models(self, models_container=None, data=[], label=[], mission=None,  test_size=0.3, use_normalization='none')")
+        print('-' * 130)
 
     # define function to initialize models
     def initialize_models(self, model_names=None, mission=None, seed=None, param=None):
@@ -304,7 +307,7 @@ class model_comparison():
             print(score_df)
             print('-'*60)
 
-            return models_fitted
+            return models_fitted, score_df
 
         # fit regression models
         if mission=='regression':
@@ -365,7 +368,7 @@ class model_comparison():
             print(score_df)
             print('-'*60)
 
-            return models_fitted
+            return models_fitted, score_df
 
         # fit cluster models
         if mission=='clustering':
@@ -414,27 +417,27 @@ class model_comparison():
             print(score_df)
             print('-'*60)
 
-            return models_fitted
+            return models_fitted, score_df
 
 
-model_function = model_comparison()
+model_comparison = model_comparison()
 
 '''
 if __name__ == '__main__':
     from sklearn.datasets import load_iris, load_breast_cancer
     func = model_comparison()
-    models_container = func.initialize_models(model_names=['knn_c', 'dt_c', 'gbdt_c'], mission='multiclass_classification', seed=2023)
+    models_container = func.initialize_models(model_names=['knn_c', 'dt_c', 'gbdt_c', 'adaboost_c', 'rf_c', 'mlp_c'], mission='multiclass_classification', seed=2023)
     # print(models_container)
     data = load_iris()
     X = data.data
     y = data.target
     # print(X.shape)
     # print(y.shape)
-    models = func.fit_models(data=X, label=y, models_container=models_container, mission='multiclass_classification')
+    models, result = func.fit_models(data=X, label=y, models_container=models_container, mission='multiclass_classification')
     # print(models)
-    m1 = models[0]
-    print(m1)
-    data = load_iris()
-    y_pred = m1.predict(X)
-    print(precision_score(y, y_pred, average='macro'))
+    # m1 = models[0]
+    # print(m1)
+    # data = load_iris()
+    # y_pred = m1.predict(X)
+    # print(precision_score(y, y_pred, average='macro'))
 '''
