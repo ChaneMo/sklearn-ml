@@ -1,4 +1,4 @@
 # version1
 
 
-from _core import *
+from ._core import *
