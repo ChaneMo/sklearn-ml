@@ -4,10 +4,11 @@ This project is a description for the pypi package "sklearn-ml", which is for ma
     pip install sklearn-ml
 # usage
 ## import package
-    from sklearn_ml import model_comparison as mc
+    from sklearn_ml import model_comparison
 ## initialize models from sklearn
 sklearn-ml supports missions including "binary_classification", "multiclass_classification", "regression" and "clustering", you could choose your mission and models by using the following sample code:
 
+    mc = model_comparison()
     initialized_models = mc.initialize_models(model_names=['knn_c', 'dt_c', 'gbdt_c'], mission='multiclass_classification', seed=2023)
 
 The function returns initialized models that in model_names, you could also customize the model parameters by use parameter "param={model_name:model_parameters}", for example:
