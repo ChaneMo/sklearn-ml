@@ -10,7 +10,7 @@ This project is a description for the pypi package "sklearn-ml", which is for ma
 ## initialize models from sklearn
 sklearn-ml supports missions including "binary_classification", "multiclass_classification", "regression" and "clustering", you could choose your mission and models by using the following sample code:
 
-    initialized_models = mc.initialize_models(model_names=['knn_c', 'dt_c', 'gbdt_c'], mission='multiclass_classification', seed=2023)
+    models_container = mc.initialize_models(model_names=['knn_c', 'dt_c', 'gbdt_c'], mission='multiclass_classification', seed=2023)
 
 The function returns initialized models that in model_names, you could also customize the model parameters by use parameter "param={model_name:model_parameters}", for example:
 
@@ -28,7 +28,8 @@ You could also use normalization by setting the "use_normalization" parameter: "
 Here, we use iris dataset from sklearn as an example:
 
     from sklearn.datasets import load_iris
-    from sklearn_ml import model_comparison as mc 
+    from sklearn_ml import model_comparison
+    mc = model_comparison()
     models_container = mc.initialize_models(model_names=['knn_c', 'dt_c', 'gbdt_c'], mission='multiclass_classification', seed=2023)
     # print(models_container)
     data = load_iris()
