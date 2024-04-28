@@ -1,3 +1,9 @@
+# -*- coding: utf-8 -*-
+"""
+@author: ChaneMo
+@date: 2024-04-28
+"""
+
 # import necessary libraries
 import pandas as pd
 from sklearn.preprocessing import MinMaxScaler, StandardScaler
