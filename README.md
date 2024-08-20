@@ -19,7 +19,7 @@ The function returns initialized models that in model_names, you could also cust
 ## train models
 You could train models that are already initiialized in initialized_models by using the following code:
 
-    fitted_models, test_results = fit_models(data=X, label=y, models_container=models_container, mission='multiclass_classification')
+    fitted_models, test_results = mc.fit_models(data=X, label=y, models_container=models_container, mission='multiclass_classification')
 
 The function returns the trained models and the test result after using the sklearn function train_test_split() to train and test. Besides, the label y must be categorical, such as [0, 1, 1, 0, ......].
 
@@ -35,7 +35,7 @@ Here, we use iris dataset from sklearn as an example:
     data = load_iris()
     X = data.data
     y = data.target
-    models_fitted, result_df = mc.fit_models(data=X, label=y, models_container=models_container, mission='multiclass_classification')
+    models_fitted, result_df = mc.fit_models(data=X, label=y, stratify=y, test_size=0.2, models_container=models_container, mission='multiclass_classification')
 Once you import sklearn_ml, it will show the usage tips:
 
 ![1697384201769](https://github.com/ChaneMo/sklearn-ml/assets/91654630/bd1de6bd-8308-4429-a021-4059871b1bfd)
