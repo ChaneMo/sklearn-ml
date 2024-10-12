@@ -2,6 +2,7 @@
 """
 @author: ChaneMo
 @date: 2024-04-28
+@update: 即将更新新版本，重写代码框架，增加便携化数据清洗模块（2024-10-12）
 """
 
 # import necessary libraries
