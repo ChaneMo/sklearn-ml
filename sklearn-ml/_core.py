@@ -1,23 +1,17 @@
 # -*- coding: utf-8 -*-
 """
 @author: ChaneMo
-@date: 2024-04-28
-@update: 即将更新新版本，重写代码框架，增加便携化数据清洗模块（2024-10-12）
+@date: 2024-10-22
 """
 
 # import necessary libraries
-import pandas as pd
-from sklearn.preprocessing import MinMaxScaler, StandardScaler
-from sklearn.linear_model import LogisticRegression
-from sklearn.svm import SVC, SVR
-from sklearn.neighbors import KNeighborsClassifier, KNeighborsRegressor
-from sklearn.tree import DecisionTreeClassifier, DecisionTreeRegressor
-from sklearn.ensemble import GradientBoostingClassifier, GradientBoostingRegressor, AdaBoostClassifier, AdaBoostRegressor, RandomForestClassifier, RandomForestRegressor
-from sklearn.neural_network import MLPClassifier, MLPRegressor
-from sklearn.cluster import KMeans, DBSCAN
-from sklearn.model_selection import train_test_split
-from sklearn.metrics import (precision_score, recall_score, f1_score, r2_score, mean_squared_error, mean_absolute_error,
-                             mean_absolute_percentage_error, silhouette_score, calinski_harabasz_score, davies_bouldin_score)
+from utils.binary_classification import biClassification
+from utils.multi_classification import multiClassification
+from utils.regression import regression
+from utils.clustering import cluster
+from training.train_classification import train_classification
+from training.train_regression import train_regression
+from training.train_clustering import train_clustering
 
 
 __all__ = ['model_comparison']
@@ -64,162 +58,24 @@ class model_comparison():
 
         # binary classification models
         if mission=='binary_classification':
-            models_container = []
-            if 'lr' in model_names:
-                if param!=None and 'lr' in param:
-                    lr = LogisticRegression(random_state=seed, **param['lr'])
-                else:
-                    lr = LogisticRegression(random_state=seed)
-                models_container.append(lr)
-            if 'svc' in model_names:
-                if param!=None and 'svc' in param:
-                    svc = SVC(random_state=seed, **param['svc'])
-                else:
-                    svc = SVC(random_state=seed)
-                models_container.append(svc)
-            if 'knn_c' in model_names:
-                if param!=None and 'knn_c' in param:
-                    knn_c = KNeighborsClassifier(**param['knn_c'])
-                else:
-                    knn_c = KNeighborsClassifier()
-                models_container.append(knn_c)
-            if 'dt_c' in model_names:
-                if param!=None and 'dt_c' in param:
-                    dt_c = DecisionTreeClassifier(random_state=seed, **param['dt_c'])
-                else:
-                    dt_c = DecisionTreeClassifier(random_state=seed)
-                models_container.append(dt_c)
-            if 'gbdt_c' in model_names:
-                if param!=None and 'gbdt_c' in param:
-                    gbdt_c = GradientBoostingClassifier(random_state=seed, **param['gbdt_c'])
-                else:
-                    gbdt_c = GradientBoostingClassifier(random_state=seed)
-                models_container.append(gbdt_c)
-            if 'adaboost_c' in model_names:
-                if param!=None and 'adaboost_c' in param:
-                    adaboost_c = AdaBoostClassifier(random_state=seed, **param['adaboost_c'])
-                else:
-                    adaboost_c = AdaBoostClassifier(random_state=seed)
-                models_container.append(adaboost_c)
-            if 'rf_c' in model_names:
-                if param!=None and 'rf_c' in param:
-                    rf_c = RandomForestClassifier(random_state=seed, **param['rf_c'])
-                else:
-                    rf_c = RandomForestClassifier(random_state=seed)
-                models_container.append(rf_c)
-            if 'mlp_c' in model_names:
-                if param!=None and 'mlp_c' in param:
-                    mlp_c = MLPClassifier(random_state=seed, **param['mlp_c'])
-                else:
-                    mlp_c = MLPClassifier(random_state=seed)
-                models_container.append(mlp_c)
+            models_container =  biClassification(model_names, param, seed)
 
         # multiclass classification models
         if mission=='multiclass_classification':
-            models_container = []
-            if 'knn_c' in model_names:
-                if param != None and 'knn_c' in param:
-                    knn_c = KNeighborsClassifier(**param['knn_c'])
-                else:
-                    knn_c = KNeighborsClassifier()
-                models_container.append(knn_c)
-            if 'dt_c' in model_names:
-                if param != None and 'dt_c' in param:
-                    dt_c = DecisionTreeClassifier(random_state=seed, **param['dt_c'])
-                else:
-                    dt_c = DecisionTreeClassifier(random_state=seed)
-                models_container.append(dt_c)
-            if 'gbdt_c' in model_names:
-                if param != None and 'gbdt_c' in param:
-                    gbdt_c = GradientBoostingClassifier(random_state=seed, **param['gbdt_c'])
-                else:
-                    gbdt_c = GradientBoostingClassifier(random_state=seed)
-                models_container.append(gbdt_c)
-            if 'adaboost_c' in model_names:
-                if param != None and 'adaboost_c' in param:
-                    adaboost_c = AdaBoostClassifier(random_state=seed, **param['adaboost_c'])
-                else:
-                    adaboost_c = AdaBoostClassifier(random_state=seed)
-                models_container.append(adaboost_c)
-            if 'rf_c' in model_names:
-                if param != None and 'rf_c' in param:
-                    rf_c = RandomForestClassifier(random_state=seed, **param['rf_c'])
-                else:
-                    rf_c = RandomForestClassifier(random_state=seed)
-                models_container.append(rf_c)
-            if 'mlp_c' in model_names:
-                if param != None and 'mlp_c' in param:
-                    mlp_c = MLPClassifier(random_state=seed, **param['mlp_c'])
-                else:
-                    mlp_c = MLPClassifier(random_state=seed)
-                models_container.append(mlp_c)
+            models_container = multiClassification(model_names, param, seed)
 
         # regression models
         if mission=='regression':
-            models_container = []
-            if 'svr' in model_names:
-                if param!=None and 'svr' in param:
-                    svr = SVR(**param['svr'])
-                else:
-                    svr = SVR()
-                models_container.append(svr)
-            if 'knn_r' in model_names:
-                if param!=None and 'knn_r' in param:
-                    knn_r = KNeighborsRegressor(**param['knn_r'])
-                else:
-                    knn_r = KNeighborsRegressor()
-                models_container.append(knn_r)
-            if 'dt_r' in model_names:
-                if param!=None and 'dt_r' in param:
-                    dt_r = DecisionTreeRegressor(random_state=seed, **param['dt_r'])
-                else:
-                    dt_r = DecisionTreeRegressor(random_state=seed)
-                models_container.append(dt_r)
-            if 'gbdt_r' in model_names:
-                if param!=None and 'gbdt_r' in param:
-                    gbdt_r = GradientBoostingRegressor(random_state=seed, **param['ggbdt_r'])
-                else:
-                    gbdt_r = GradientBoostingRegressor(random_state=seed)
-                models_container.append(gbdt_r)
-            if 'adaboost_r' in model_names:
-                if param!=None and 'adaboost_r' in param:
-                    adaboost_r = AdaBoostRegressor(random_state=seed, **param['adaboost_r'])
-                else:
-                    adaboost_r = AdaBoostRegressor(random_state=seed)
-                models_container.append(adaboost_r)
-            if 'rf_r' in model_names:
-                if param!=None and 'rf_r' in param:
-                    rf_r = RandomForestRegressor(random_state=seed, **param['rf_r'])
-                else:
-                    rf_r = RandomForestRegressor(random_state=seed)
-                models_container.append(rf_r)
-            if 'mlp_r' in model_names:
-                if param!=None and 'mlp_r' in param:
-                    mlp_r = MLPRegressor(random_state=seed, **param['mlp_r'])
-                else:
-                    mlp_r = MLPRegressor(random_state=seed)
-                models_container.append(mlp_r)
+            models_container = regression(model_names, param, seed)
 
         # cluster models
         if mission=='clustering':
-            models_container = []
-            if 'kmeans' in model_names:
-                if param!=None and 'kmeans' in param:
-                    kmeans = KMeans(random_state=seed, **param['kmeans'])
-                else:
-                    kmeans = KMeans(random_state=seed)
-                models_container.append(kmeans)
-            if 'dbscan' in model_names:
-                if param!=None and 'dbscan' in param:
-                    dbscan = DBSCAN(**param['dbscan'])
-                else:
-                    dbscan = DBSCAN()
-                models_container.append(dbscan)
+            models_container = cluster(model_names, param, seed)
 
         return models_container
 
     # models fitting
-    def fit_models(self, models_container=None, data=[], label=[], mission=None, stratify='none', test_size=0.3, use_normalization='none'):
+    def fit_models(self, models_container=None, data=[], label=[], mission=None, stratify=None, test_size=0.3, use_normalization='none'):
         '''
         :param models_container: scikit-learn models initialized by function initialize_models() or by user
         :param data: data for model fit
@@ -246,183 +102,19 @@ class model_comparison():
 
         # fit classification models
         if mission=='multiclass_classification' or mission=='binary_classification':
-            if not label:
-                print('Please make sure that your label are inputted!')
-                return
-            X_train, X_test, y_train, y_test = train_test_split(data, label, stratify=stratify, test_size=test_size)
-
-            # standardization
-            if use_normalization=='minmax':
-                scaler = MinMaxScaler()
-                X_train = scaler.fit_transform(X_train)
-                X_test = scaler.fit_transform(X_test)
-            if use_normalization=='standard':
-                scaler = StandardScaler()
-                X_train = scaler.fit_transform(X_train)
-                X_test = scaler.fit_transform(X_test)
-
-            # train models and return
-            score_df = []
-            models_fitted = []
-            for idx, model in enumerate(models_container):
-                normalize_signal = 0
-                # custom standardization
-                if use_normalization!='none':
-                    if type(use_normalization)=='list':
-                        if use_normalization[idx]=='minmax':
-                            scaler = MinMaxScaler()
-                            X_train_normalize = scaler.fit_transform(X_train)
-                            X_test_normalize = scaler.fit_transform(X_test)
-                            normalize_signal = 1
-                        if use_normalization[idx]=='standard':
-                            scaler = StandardScaler()
-                            X_train_normalize = scaler.fit_transform(X_train)
-                            X_test_normalize = scaler.fit_transform(X_test)
-                            normalize_signal = 1
-                if normalize_signal==0:
-                    model.fit(X_train, y_train)
-                    models_fitted.append(model)
-                    y_pred = model.predict(X_test)
-                elif normalize_signal==1:
-                    model.fit(X_train_normalize, y_train)
-                    models_fitted.append(model)
-                    y_pred = model.predict(X_test_normalize)
-
-                # binary classification metrics
-                if len(set(label))==2:
-                    prec = precision_score(y_test, y_pred)
-                    rec = recall_score(y_test, y_pred)
-                    f1 = f1_score(y_test, y_pred)
-                    # print('Precision:', prec)
-                    # print('Recall:', rec)
-                    # print('F1 score:', f1)
-                else:
-                    # multiclass classification metrics
-                    prec = precision_score(y_test, y_pred, average='macro')
-                    rec = recall_score(y_test, y_pred, average='macro')
-                    f1 = f1_score(y_test, y_pred, average='macro')
-                    # print('Precision:', precision_score(y_test, y_pred, average='macro'))
-                    # print('Recall:', recall_score(y_test, y_pred, average='macro'))
-                    # print('F1 score:', f1_score(y_test, y_pred, average='macro'))
-                score_df.append([str(model).split('(')[0], prec, rec, f1])
-
-            # print results
-            score_df = pd.DataFrame(score_df)
-            score_df.columns = ['Model', 'Precision', 'Recall', 'F1']
-            print('Model results:')
-            print('-'*60)
-            print(score_df)
-            print('-'*60)
+            models_fitted, score_df = train_classification(data, label, use_normalization, stratify, test_size, models_container)
 
             return models_fitted, score_df
 
         # fit regression models
         if mission=='regression':
-            if not label:
-                print('Please make sure that your label are inputted!')
-                return
-            X_train, X_test, y_train, y_test = train_test_split(data, label, stratify=stratify, test_size=test_size)
-
-            # standardization
-            if use_normalization=='minmax':
-                scaler = MinMaxScaler()
-                X_train = scaler.fit_transform(X_train)
-                X_test = scaler.fit_transform(X_test)
-            if use_normalization=='standard':
-                scaler = StandardScaler()
-                X_train = scaler.fit_transform(X_train)
-                X_test = scaler.fit_transform(X_test)
-
-            # train models and return
-            score_df = []
-            models_fitted = []
-            for idx, model in enumerate(models_container):
-                normalize_signal = 0
-                # custom standardization
-                if use_normalization!='none':
-                    if type(use_normalization)=='list':
-                        if use_normalization[idx]=='minmax':
-                            scaler = MinMaxScaler()
-                            X_train_normalize = scaler.fit_transform(X_train)
-                            X_test_normalize = scaler.fit_transform(X_test)
-                            normalize_signal = 1
-                        if use_normalization[idx]=='standard':
-                            scaler = StandardScaler()
-                            X_train_normalize = scaler.fit_transform(X_train)
-                            X_test_normalize = scaler.fit_transform(X_test)
-                            normalize_signal = 1
-                if normalize_signal==0:
-                    model.fit(X_train, y_train)
-                    models_fitted.append(model)
-                    y_pred = model.predict(X_test)
-                elif normalize_signal==1:
-                    model.fit(X_train_normalize, y_train)
-                    models_fitted.append(model)
-                    y_pred = model.predict(X_test_normalize)
-
-                # regression metrics
-                r2 = r2_score(y_test, y_pred)
-                mse = mean_squared_error(y_test, y_pred)
-                mae = mean_absolute_error(y_test, y_pred)
-                mape = mean_absolute_percentage_error(y_test, y_pred)
-                score_df.append([str(model).split('(')[0], r2, mse, mae, mape])
-
-            # print results
-            score_df = pd.DataFrame(score_df)
-            score_df.columns = ['Model', 'r2', 'mse', 'mae', 'mape']
-            print('Model results:')
-            print('-'*60)
-            print(score_df)
-            print('-'*60)
+            models_fitted, score_df = train_regression(data, label, use_normalization, stratify, test_size, models_container)
 
             return models_fitted, score_df
 
         # fit cluster models
         if mission=='clustering':
-            # standardization
-            if use_normalization=='minmax':
-                scaler = MinMaxScaler()
-                data = scaler.fit_transform(data)
-            if use_normalization=='standard':
-                scaler = StandardScaler()
-                data = scaler.fit_transform(data)
-
-            # train models and return
-            score_df = []
-            models_fitted = []
-            for idx, model in enumerate(models_container):
-                normalize_signal = 0
-                # custom standardization
-                if use_normalization!='none':
-                    if type(use_normalization)=='list':
-                        if use_normalization[idx]=='minmax':
-                            scaler = MinMaxScaler()
-                            data_normalize = scaler.fit_transform(data)
-                            normalize_signal = 1
-                        if use_normalization[idx]=='standard':
-                            scaler = StandardScaler()
-                            data_normalize = scaler.fit_transform(data)
-                            normalize_signal = 1
-                if normalize_signal==0:
-                    y_pred = model.fit_predict(data)
-                    models_fitted.append(model)
-                elif normalize_signal==1:
-                    y_pred = model.fit_predict(data_normalize)
-                    models_fitted.append(model)
-
-                # cluster metrics
-                sil_score = silhouette_score(data, y_pred)
-                ch_score = calinski_harabasz_score(data, y_pred)
-                dbi_score = davies_bouldin_score(data, y_pred)
-                score_df.append([str(model).split('(')[0], sil_score, ch_score, dbi_score])
-
-            # print results
-            score_df = pd.DataFrame(score_df)
-            score_df.columns = ['Model', 'silhouette', 'calinski_harabasz', 'davies_bouldin']
-            print('Model results:')
-            print('-'*60)
-            print(score_df)
-            print('-'*60)
+            models_fitted, score_df = train_clustering(data, use_normalization, models_container)
 
             return models_fitted, score_df
 
@@ -437,9 +129,10 @@ if __name__ == '__main__':
 
     from sklearn.datasets import load_iris, load_breast_cancer
     func = model_comparison()
-    models_container = func.initialize_models(model_names=['knn_c', 'dt_c', 'gbdt_c', 'adaboost_c', 'rf_c', 'mlp_c'], mission='multiclass_classification', seed=2023)
+    models_container = func.initialize_models(model_names=['knn_c', 'dt_c'], mission='multiclass_classification', seed=2023)
     # print(models_container)
     data = load_iris()
+    # data = load_breast_cancer()
     X = data.data
     y = data.target
     # print(X.shape)
@@ -451,4 +144,5 @@ if __name__ == '__main__':
     # data = load_iris()
     # y_pred = m1.predict(X)
     # print(precision_score(y, y_pred, average='macro'))
+
 
